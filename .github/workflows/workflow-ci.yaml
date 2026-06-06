@@ -28,8 +28,7 @@ jobs:
     - name: Run MLflow Project Retraining
       run: |
         cd MLProject
-        # Menjalankan proyek retraining menggunakan konfigurasi file MLProject
-        mlflow run . --no-conda
+        mlflow run . --env-manager=local
 
     - name: Commit and Push Trained Model Artifacts
       run: |
