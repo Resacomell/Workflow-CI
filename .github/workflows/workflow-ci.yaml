@@ -1,0 +1,61 @@
+name: Workflow-CI Retraining & Docker Build 
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'MLProject/**' 
+jobs:
+  mlflow-ci-advance:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Base Dependencies
+      run: |
+        pip install --upgrade pip
+        pip install mlflow pandas scikit-learn
+
+    - name: Run MLflow Project Retraining
+      run: |
+        cd MLProject
+        # Menjalankan proyek retraining menggunakan konfigurasi file MLProject
+        mlflow run . --no-conda
+
+    - name: Commit and Push Trained Model Artifacts
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        
+        git add MLProject/mlruns/
+        git commit -m "chore: automated model artifact logging via CI [skip ci]" || echo "No changes to commit"
+        git push
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and Push MLflow Docker Image
+      run: |
+        RUN_ID=$(ls -t MLProject/mlruns/0 | head -n 1)
+        MODEL_URI="MLProject/mlruns/0/$RUN_ID/artifacts/model"
+        
+        echo "[INFO] Menggunakan Model URI: $MODEL_URI"
+        
+        mlflow models build-docker -m "$MODEL_URI" -n "${{ secrets.DOCKERHUB_USERNAME }}/diabetes-model-ci:latest"
+        
+        docker push "${{ secrets.DOCKERHUB_USERNAME }}/diabetes-model-ci:latest"
