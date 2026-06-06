@@ -7,8 +7,6 @@ from sklearn.metrics import accuracy_score
 
 def train_model():
     mlflow.sklearn.autolog()
-
-    print("Memulai otomatisasi re-training di GitHub Actions...")
     
     data = pd.read_csv("diabetes_prediction_dataset_preprocessing.csv")
     X = data.drop(columns=['diabetes'])
