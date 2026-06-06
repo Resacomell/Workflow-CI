@@ -63,7 +63,6 @@ jobs:
           MODEL_URI="mlruns/0/$RUN_ID/artifacts"
         else
           MODEL_URI="."
-        fi
         
         echo "Jalur model yang ditemukan dan digunakan: $MODEL_URI"
         
