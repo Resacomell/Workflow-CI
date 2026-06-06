@@ -55,10 +55,10 @@ jobs:
       run: |
         RUN_ID=$(ls -t MLProject/mlruns/0 | head -n 1)
         
-        MODEL_URI="$GITHUB_WORKSPACE/MLProject/mlruns/0/$RUN_ID/artifacts/model"
+        MODEL_URI="runs:/$RUN_ID/model"
         
-        echo "[INFO] Menggunakan Model URI Mutlak: $MODEL_URI"
-
+        echo "Menggunakan Model URI resmi MLflow: $MODEL_URI"
+        
         mlflow models build-docker -m "$MODEL_URI" -n "${{ secrets.DOCKERHUB_USERNAME }}/diabetes-model-ci:latest" --env-manager=local
         
         docker push "${{ secrets.DOCKERHUB_USERNAME }}/diabetes-model-ci:latest"
