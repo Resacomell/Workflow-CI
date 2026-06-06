@@ -40,7 +40,9 @@ jobs:
         
         git add MLProject/mlruns/
         git commit -m "chore: automated model artifact logging via CI [skip ci]" || echo "No changes to commit"
-        git push
+        
+        git pull origin main --rebase
+        git push origin main
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
