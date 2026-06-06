@@ -7,9 +7,12 @@ on:
       - master
     paths:
       - 'MLProject/**' 
+
 jobs:
   mlflow-ci-advance:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write 
 
     steps:
     - name: Checkout Code
