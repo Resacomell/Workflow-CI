@@ -56,10 +56,16 @@ jobs:
     - name: Build and Push MLflow Docker Image
       run: |
         RUN_ID=$(ls -t MLProject/mlruns/0 | head -n 1)
-        MODEL_URI="MLProject/mlruns/0/$RUN_ID/artifacts/model"
-        
-        echo "[INFO] Menggunakan Model URI: $MODEL_URI"
-        
-        mlflow models build-docker -m "$MODEL_URI" -n "${{ secrets.DOCKERHUB_USERNAME }}/diabetes-model-ci:latest"
-        
-        docker push "${{ secrets.DOCKERHUB_USERNAME }}/diabetes-model-ci:latest"
+            
+            ARTIFACT_DIR="MLProject/mlruns/0/$RUN_ID/artifacts"
+            if [ -d "$ARTIFACT_DIR/model" ]; then
+              MODEL_URI="$ARTIFACT_DIR/model"
+            else
+              MODEL_URI="$ARTIFACT_DIR"
+            fi
+            
+            echo "Menggunakan Model URI yang valid: $MODEL_URI"
+            
+            mlflow models build-docker -m "$MODEL_URI" -n "${{ secrets.DOCKERHUB_USERNAME }}/diabetes-model-ci:latest" --env-manager=local
+            
+            docker push "${{ secrets.DOCKERHUB_USERNAME }}/diabetes-model-ci:latest"
