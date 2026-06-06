@@ -55,6 +55,7 @@ jobs:
       run: |
         cd MLProject
 
+        if [ -d "model" ]; then
           MODEL_URI="model"
         elif [ -d "outputs" ]; then
           MODEL_URI="outputs"
