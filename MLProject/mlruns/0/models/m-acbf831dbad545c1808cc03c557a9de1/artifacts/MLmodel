@@ -1,0 +1,35 @@
+artifact_path: /home/runner/work/Workflow-CI/Workflow-CI/MLProject/mlruns/0/models/m-acbf831dbad545c1808cc03c557a9de1/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.10.20
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.2
+    skops_trusted_types: null
+is_signature_from_type_hint: false
+mlflow_version: 3.13.0
+model_id: m-acbf831dbad545c1808cc03c557a9de1
+model_size_bytes: 50177893
+model_uuid: m-acbf831dbad545c1808cc03c557a9de1
+prompts: null
+run_id: 7cc57bb4f9d5463696aebc80191bbe7f
+signature:
+  inputs: '[{"type": "long", "name": "gender", "required": true}, {"type": "double",
+    "name": "age", "required": true}, {"type": "long", "name": "hypertension", "required":
+    true}, {"type": "long", "name": "heart_disease", "required": true}, {"type": "long",
+    "name": "smoking_history", "required": true}, {"type": "double", "name": "bmi",
+    "required": true}, {"type": "double", "name": "HbA1c_level", "required": true},
+    {"type": "double", "name": "blood_glucose_level", "required": true}, {"type":
+    "long", "name": "age_group", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-06-07 05:37:18.455645'
