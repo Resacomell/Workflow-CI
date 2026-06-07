@@ -4,6 +4,8 @@ import mlflow.sklearn
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
+import shutil
+import os
 
 def train_model():
     mlflow.sklearn.autolog()
@@ -21,6 +23,13 @@ def train_model():
         y_pred = model.predict(X_test)
         accuracy = accuracy_score(y_test, y_pred)
         print(f"Re-training Berhasil, Akurasi Model CI: {accuracy:.4f}")
+        return model
 
 if __name__ == "__main__":
-    train_model()
+    if os.path.exists("model_output"):
+        shutil.rmtree("model_output")
+        
+    trained_model = train_model()
+    
+    mlflow.sklearn.save_model(trained_model, "model_output")
+    print("Selesai")

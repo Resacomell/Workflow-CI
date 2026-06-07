@@ -54,13 +54,6 @@ jobs:
     - name: Build and Push MLflow Docker Image
       run: |
         cd MLProject
-        
-        RUN_ID=$(ls -t mlruns/0 | head -n 1)
-        
-        MODEL_URI="mlruns/0/$RUN_ID/artifacts"
-        
-        echo "Menggunakan Model URI: $MODEL_URI"
-        
-        mlflow models build-docker -m "$MODEL_URI" -n "${{ secrets.DOCKERHUB_USERNAME }}/diabetes-model-ci:latest" --env-manager=local
+        mlflow models build-docker -m "model_output" -n "${{ secrets.DOCKERHUB_USERNAME }}/diabetes-model-ci:latest" --env-manager=local
         
         docker push "${{ secrets.DOCKERHUB_USERNAME }}/diabetes-model-ci:latest"
